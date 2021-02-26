@@ -1,0 +1,65 @@
+module.exports = {
+    parser: '@typescript-eslint/parser',
+    parserOptions: {
+        project: 'tsconfig.json',
+        sourceType: 'module',
+    },
+    plugins: ['@typescript-eslint/eslint-plugin'],
+    extends: [
+        'plugin:@typescript-eslint/recommended',
+        'plugin:@typescript-eslint/recommended-requiring-type-checking',
+        'prettier/@typescript-eslint',
+        'plugin:prettier/recommended',
+        'prettier',
+        'prettier/@typescript-eslint',
+    ],
+    root: true,
+    env: {
+        node: true,
+        jest: true,
+    },
+    rules: {
+        'no-var': 'error',
+        'no-plusplus': 'warn',
+        complexity: ['warn', 3],
+        'jest/expect-expect': 'off',
+        'consistent-return': 'warn',
+        'no-underscore-dangle': 'off',
+        'max-classes-per-file': 'warn',
+        'no-use-before-define': 'warn',
+        'class-methods-use-this': 'off',
+        'import/prefer-default-export': 'off',
+        'no-console': ['warn', { allow: ['info', 'warn', 'error'] }],
+        'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 0, maxBOF: 0 }],
+        '@typescript-eslint/ban-ts-comment': 'off',
+        '@typescript-eslint/require-await': 'warn',
+        '@typescript-eslint/no-unsafe-call': 'warn',
+        '@typescript-eslint/no-unused-vars': 'warn',
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-unsafe-return': 'warn',
+        '@typescript-eslint/no-unsafe-assignment': 'warn',
+        '@typescript-eslint/interface-name-prefix': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'warn',
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
+        '@typescript-eslint/ban-types': [
+            'warn',
+            {
+                types: {
+                    String: {
+                        message: 'Use string instead',
+                        fixWith: 'string',
+                    },
+                    '{}': {
+                        message: 'Use Record<K, V> instead',
+                        fixWith: 'Record<K, V>',
+                    },
+                    object: {
+                        message: 'Use Record<K, V> instead',
+                        fixWith: 'Record<K, V>',
+                    },
+                },
+            },
+        ],
+    },
+}
