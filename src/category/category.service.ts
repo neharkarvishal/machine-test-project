@@ -21,9 +21,9 @@ export class CategoryService {
         return {
             data: results,
             paging: {
-                pageSize,
-                page,
-                total,
+                pageSize: Number(pageSize),
+                page: Number(page),
+                total: Number(total),
                 totalPages: Math.ceil(total / pageSize),
             },
         }
