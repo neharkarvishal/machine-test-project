@@ -4,11 +4,15 @@ import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator'
 import type { JSONSchema } from 'objection'
 
 import { BaseModel } from '../database/models/base.model'
+import { Model } from 'objection'
+import { Product } from '../product/product.model'
 
 export class Category extends BaseModel {
     static tableName = 'category'
 
     name!: string
+
+    product?: Product
 
     static jsonSchema: JSONSchema = {
         type: 'object',
@@ -21,6 +25,18 @@ export class Category extends BaseModel {
             },
         },
     }
+
+    static relationMappings = () => ({
+        product: {
+            relation: Model.HasManyRelation,
+            modelClass: Product,
+
+            join: {
+                from: 'category.id',
+                to: 'product.categoryId',
+            },
+        },
+    })
 }
 
 export class CreateCategoryDto {

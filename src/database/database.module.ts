@@ -4,8 +4,9 @@ import * as Knex from 'knex'
 import { Model } from 'objection'
 
 import { Category } from '../category/category.model'
+import { Product } from '../product/product.model'
 
-const models = [Category]
+const models = [Category, Product]
 
 const modelProviders = models.map((model) => {
     return {

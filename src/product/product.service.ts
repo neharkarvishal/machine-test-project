@@ -1,21 +1,18 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common'
 
 import { ModelClass, raw } from 'objection'
-import { Category, CreateCategoryDto, UpdateCategoryDto } from './category.model'
+import { Product, CreateProductDto, UpdateProductDto } from './product.model'
 
 @Injectable()
-export class CategoryService {
-    constructor(@Inject(Category.name) readonly category: ModelClass<Category>) {}
+export class ProductService {
+    constructor(@Inject(Product.name) readonly product: ModelClass<Product>) {}
 
     async paginatedFindAll(paginationParams) {
         const { page = 0, pageSize = 3, order } = paginationParams
-        const {
-            results,
-            total,
-        } = await this.category
+        const { results, total } = await this.product
             .query()
             .skipUndefined()
-            .eager('product')
+            .eager('category')
             .page(page, pageSize)
 
         return {
@@ -30,10 +27,10 @@ export class CategoryService {
     }
 
     async findOneById(id: number) {
-        return this.category
+        return this.product
             .query()
             .skipUndefined()
-            .eager('product')
+            .eager('category')
             .findById(id)
             .first()
     }
@@ -45,32 +42,32 @@ export class CategoryService {
         })
     }
 
-    async create(input: CreateCategoryDto) {
+    async create(input: CreateProductDto) {
         try {
-            const catg = await this.category.query().findOne({ name: input.name })
+            const prod = await this.product.query().findOne({ name: input.name })
 
-            if (catg)
-                throw new BadRequestException([`Duplicate name: ${catg.name}`])
+            if (prod)
+                throw new BadRequestException([`Duplicate name: ${prod.name}`])
 
-            return await this.category.query().insert(input).returning('*')
+            return await this.product.query().insert(input).returning('*')
         } catch (e) {
             return Promise.reject(new BadRequestException(e))
         }
     }
 
-    async update(id: number, input: UpdateCategoryDto) {
+    async update(id: number, input: UpdateProductDto) {
         try {
             if (input?.name) {
-                const catg = await this.category
+                const prod = await this.product
                     .query()
                     .findOne({ name: input.name })
                     .skipUndefined()
 
-                if (catg)
-                    throw new BadRequestException([`Duplicate name: ${catg.name}`])
+                if (prod)
+                    throw new BadRequestException([`Duplicate name: ${prod.name}`])
             }
 
-            return await this.category.query().patchAndFetchById(id, input)
+            return await this.product.query().patchAndFetchById(id, input)
         } catch (e) {
             return Promise.reject(new BadRequestException(e))
         }
